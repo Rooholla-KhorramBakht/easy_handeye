@@ -62,20 +62,19 @@ class HandeyeSampler(object):
         :rtype: dict[str, ((float, float, float), (float, float, float, float))]
         """
         if time is None:
-            time = Time.now()
-
+            time = Time(0)
         # here we trick the library (it is actually made for eye_on_hand only). Trust me, I'm an engineer
         if self.handeye_parameters.eye_on_hand:
             rob = self.tfBuffer.lookup_transform(self.handeye_parameters.robot_base_frame,
                                                  self.handeye_parameters.robot_effector_frame, time,
-                                                 Duration(10))
+                                                 Duration(1))
         else:
             rob = self.tfBuffer.lookup_transform(self.handeye_parameters.robot_effector_frame,
                                                  self.handeye_parameters.robot_base_frame, time,
-                                                 Duration(10))
+                                                 Duration(1))
         opt = self.tfBuffer.lookup_transform(self.handeye_parameters.tracking_base_frame,
                                              self.handeye_parameters.tracking_marker_frame, time,
-                                             Duration(10))
+                                             Duration(1))
         return {'robot': rob, 'optical': opt}
 
     def take_sample(self):
